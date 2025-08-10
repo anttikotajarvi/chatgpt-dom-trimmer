@@ -1,0 +1,81 @@
+<!doctype html>
+<meta charset="utf-8" />
+<style>
+  :host { all: initial; }
+  .fab {
+    all: unset; position: fixed; bottom: 0; right: 0;
+    width: 44px; height: 44px; border-radius: 9999px;
+    background: rgba(0,0,0,.75); color: white; display: grid; place-items: center;
+    font: 600 12px/1 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    box-shadow: 0 6px 18px rgba(0,0,0,.25); cursor: pointer; user-select: none;
+  }
+  .fab:hover { filter: brightness(1.1); }
+  .backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.25); display: none; }
+  .modal {
+    position: fixed; bottom: 64px; right: 0;
+    width: 360px; max-width: calc(100vw - 24px);
+    background: #111; color: #fff; border-radius: 12px; padding: 14px;
+    box-shadow: 0 12px 32px rgba(0,0,0,.35); display: none;
+    font: 14px/1.35 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  }
+  .row { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+  .title { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+  label { color: #ccc; }
+  input[type="number"] {
+    width: 110px; padding: 6px 8px; border-radius: 8px; border: 1px solid #333;
+    background: #1b1b1b; color: #fff;
+  }
+  button.btn { all: unset; background: #2d6cdf; color: #fff; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
+  button.secondary { background: #333; }
+  .stats { color: #aaa; font-size: 12px; margin-top: 8px; display: grid; gap: 4px; }
+  .sep { height: 1px; background: #222; margin: 10px 0; }
+  .kv { display: flex; justify-content: space-between; }
+  .toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+  .switch { width: 34px; height: 20px; border-radius: 9999px; background: #444; position: relative; transition: background .2s; }
+  .switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .2s; }
+  .switch.on { background: #22c55e; }
+  .switch.on::after { transform: translateX(14px); }
+  .small { font-size: 12px; color: #bbb; }
+  .btn-block { width: 100%; text-align: center; }
+</style>
+
+<button class="fab" title="ChatGPT DOM Trimmer">Trim</button>
+
+<div class="backdrop"></div>
+<div class="modal" role="dialog" aria-modal="true" aria-label="ChatGPT DOM Trimmer">
+  <div class="title">ChatGPT DOM Trimmer</div>
+
+  <div class="row">
+    <label for="max">Keep last N turns</label>
+    <input id="max" type="number" min="5" max="5000" step="1">
+    <button class="btn" id="save">Save</button>
+  </div>
+
+  <div class="row">
+    <label class="toggle" id="pauseToggle">
+      <div class="switch" id="pauseSwitch"></div>
+      <span>Pause trimming</span>
+    </label>
+    <button class="btn secondary" id="reset">Reset counters</button>
+  </div>
+
+  <div class="sep"></div>
+
+  <div class="stats">
+    <div class="kv"><span>Total turns (articles)</span><strong id="loaded">—</strong></div>
+    <div class="kv"><span>Full (kept)</span><strong id="full">—</strong></div>
+    <div class="kv"><span>Thin (hidden shells)</span><strong id="thin">—</strong></div>
+    <div class="kv"><span>Thinned this session</span><strong id="thinned">—</strong></div>
+  </div>
+
+  <div class="sep"></div>
+
+  <button class="btn btn-block" id="gc">Garbage Collect</button>
+  <div class="small" id="gcStatus" style="margin-top:8px;"></div>
+
+  <div class="sep"></div>
+  <div class="small">
+    GC runs: trim wrappers, flatten heavy markup in last turns, purge media & caches.<br>
+    Refresh to restore the full UI if something looks off.
+  </div>
+</div>
