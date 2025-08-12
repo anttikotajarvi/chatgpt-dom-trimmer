@@ -9,7 +9,7 @@ Memory analysis and optimization design by me.
 > **Note on UI changes:**  
 > This extension depends on ChatGPT’s internal HTML/CSS structure. If OpenAI changes the DOM (class names, data attributes, etc.), some features may stop working until selectors are updated.  
 >  
-> The extension will let you know if any selectors are missing via its audit system. If that happens, please [open an issue](https://github.com/anttikotajarvi/threadtrim/issues) with the error details so we can push a fix quickly.
+> The extension will let you know if any selectors are missing via its audit system. If that happens, please [open an issue](https://github.com/anttikotajarvi/chatgpt-dom-trimmer/issues) with the error details so we can push a fix quickly.
 
 ## Features
 
