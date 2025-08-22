@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ChatGPT DOM Trimmer",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": "Antti Kotajärvi",
   "description": "Keeps ChatGPT tabs fast by trimming old DOM nodes and offering optional cleanup tools.",
   "icons": {

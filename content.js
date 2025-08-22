@@ -62,16 +62,24 @@ function resolveSelectors(registry) {
 }
 
 // ---------------- Boot ----------------
-chrome.storage.sync.get({ maxTurns: DEFAULT_MAX_TURNS }, (res) => {
+chrome.storage.sync.get({ maxTurns: DEFAULT_MAX_TURNS, paused: false }, (res) => {
   maxTurns = clampInt(res.maxTurns, 5, 5000);
+  paused = !!res.paused;
   setup();
 });
 
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === "sync" && changes.maxTurns) {
-    maxTurns = clampInt(changes.maxTurns.newValue, 5, 5000);
-    scheduleTrim(0);
-    updateStatsUI();
+  if (area === "sync") {
+    if (changes.maxTurns) {
+      maxTurns = clampInt(changes.maxTurns.newValue, 5, 5000);
+      scheduleTrim(0);
+      updateStatsUI();
+    }
+    if (changes.paused) {
+      paused = !!changes.paused.newValue;
+      if (!paused) scheduleTrim(0);
+      if (ui && ui.pauseSwitch) ui.pauseSwitch.classList.toggle("on", paused);
+    }
   }
 });
 
@@ -593,6 +601,7 @@ async function injectUI() {
 
   on(pauseToggle, "click", () => {
     paused = !paused;
+    chrome.storage.sync.set({ paused });
     updatePauseUI();
     if (!paused) scheduleTrim(0);
   });
@@ -626,7 +635,9 @@ async function injectUI() {
     modal,
     backdrop,
     input,
+    pauseSwitch,
   };
+  updatePauseUI();
 }
 
 function toggleModal() {

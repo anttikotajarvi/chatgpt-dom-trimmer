@@ -15,6 +15,7 @@ Memory analysis and optimization design by me.
 
 - Limit the number of chat turns in the DOM (configurable)
 - Hide older turns while keeping the visible page unchanged
+- Disable trimming switch that persists across reloads
 - Manual **GC** button:
   - Sets `content-visibility` on off-screen blocks
   - Pauses videos/media
